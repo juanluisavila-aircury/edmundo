@@ -1,0 +1,13 @@
+{
+  "name": "edmundo",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "frontend"
+    ]
+  },
+  "scripts": {
+    "start:frontend": "yarn workspace @app/frontend start",
+    "build:frontend": "yarn workspace @app/frontend build"
+  }
+}
