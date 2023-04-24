@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`', schema: 'edmundoschema')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public function __construct(String $email){
+        $this->email = $email;
+    }
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
