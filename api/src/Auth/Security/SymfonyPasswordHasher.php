@@ -21,7 +21,7 @@ class SymfonyPasswordHasher implements PasswordHasherInterface
 
     public function isPasswordValid(PasswordAuthenticatedUserInterface $user, string $password) : bool
     {
-        return $this->isPasswordValid($user,$password);
+        return $this->passwordHasher->isPasswordValid($user,$password);
     }
 }
 
