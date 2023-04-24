@@ -23,6 +23,14 @@ class Classes
     #[ORM\Column(length: 10)]
     private ?string $classCode = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Creator', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $creator = null;
+
+    public function __construct(User $user, string $name){
+        $this->creator = $user;
+        $this->name = $name;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +68,18 @@ class Classes
     public function setClassCode(string $classCode): self
     {
         $this->classCode = $classCode;
+
+        return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): self
+    {
+        $this->creator = $creator;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -13,6 +15,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct(String $email){
         $this->email = $email;
+        $this->Creator = new ArrayCollection();
     }
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,6 +33,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Classes::class, orphanRemoval: true)]
+    private Collection $Creator;
 
     public function getId(): ?int
     {
@@ -99,5 +105,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Classes>
+     */
+    public function getCreator(): Collection
+    {
+        return $this->Creator;
+    }
+
+    public function addCreator(Classes $creator): self
+    {
+        if (!$this->Creator->contains($creator)) {
+            $this->Creator->add($creator);
+            $creator->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreator(Classes $creator): self
+    {
+        if ($this->Creator->removeElement($creator)) {
+            // set the owning side to null (unless already changed)
+            if ($creator->getCreator() === $this) {
+                $creator->setCreator(null);
+            }
+        }
+
+        return $this;
     }
 }
