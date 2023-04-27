@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClassesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClassesRepository::class)]
@@ -27,9 +29,13 @@ class Classes
     #[ORM\JoinColumn(nullable: false)]
     private ?User $creator = null;
 
+    #[ORM\OneToMany(mappedBy: 'Classes', targetEntity: Participants::class, orphanRemoval: true)]
+    private Collection $participants;
+
     public function __construct(User $user, string $name){
         $this->creator = $user;
         $this->name = $name;
+        $this->participants = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -80,6 +86,36 @@ class Classes
     public function setCreator(?User $creator): self
     {
         $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participants>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participants $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants->add($participant);
+            $participant->setClasses($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participants $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getClasses() === $this) {
+                $participant->setClasses(null);
+            }
+        }
 
         return $this;
     }

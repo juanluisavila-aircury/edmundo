@@ -32,13 +32,13 @@ class CreateClassService{
         $found = true;
         while($found == true){
             $length = 10;
-            $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $chLength = strlen($characters);
             $code = '';
             for($i = 0 ; $i < $length ; $i++){
                 $code .= $characters[random_int(0,$chLength -1)];
             }
-            $found = $this->userRepository->findBy(array('class_code' => $code));
+            $found = $this->classesRepository->findBy(array('classCode' => $code));
         }
         return $code;
     }
