@@ -19,16 +19,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Controller\:
-        resource: '../src/Controller'
-        tags: [ 'controller.service_arguments' ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    League\Fractal\Serializer\DataArraySerializer:
-        class: League\Fractal\Serializer\DataArraySerializer
-
-    League\Fractal\Manager:
-        class: League\Fractal\Manager
-        calls:
-            - [ setSerializer, [ '@League\Fractal\Serializer\DataArraySerializer' ] ]
