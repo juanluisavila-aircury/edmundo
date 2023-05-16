@@ -18,19 +18,20 @@ class ManageClassService
         $this->userRepository = $userRepository;
         $this->participantsRepository = $participantsRepository;
     }
+
+
     public function findClasses(String $email):string
     {
-        $user = new User($email);
-        $found = $this->userRepository->findBy(array('email' => $email));
-        if($found){
-            $classesfound = $this->participantsRepository->findBy(array('Users' => $found[0]));
+        $founduser = $this->userRepository->findBy(array('email' => $email));
+        if($founduser){
+            $classesfound = $this->participantsRepository->findBy(array('users_id' => $founduser[0]['id']));
             if($classesfound){
                 return $classesfound;
             }else{
-                return '';
+                return 'clase no encontrada' + $founduser[0]['email'];
             }
         }else{
-            return '';
+            return 'usuario no encontrado';
         }
     }
 }

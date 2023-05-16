@@ -54,7 +54,7 @@ class ClassController extends AbstractController
      * )
      * @OA\Tag(name="hasClass")
      */
-    #[Route('/hasclass', name: 'app_hasclass', methods: 'POST')]
+    #[Route('/hasclasses', name: 'app_hasclass', methods: 'POST')]
     public function hasClasses(Request $request){
         $email = $request->get('email');
         $hasclass = $this->manageClassService->findClasses($email);
