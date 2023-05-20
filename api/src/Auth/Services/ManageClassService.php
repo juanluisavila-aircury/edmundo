@@ -3,6 +3,7 @@
 namespace App\Auth\Services;
 
 use App\Entity\Classes;
+use App\Entity\Participants;
 use App\Entity\User;
 use App\Repository\ClassesRepository;
 use App\Repository\ParticipantsRepository;
@@ -24,11 +25,11 @@ class ManageClassService
     {
         $founduser = $this->userRepository->findBy(array('email' => $email));
         if($founduser){
-            $classesfound = $this->participantsRepository->findBy(array('users_id' => $founduser[0]['id']));
+            $classesfound = $this->participantsRepository->findBy(array('Users' => $founduser[0]));
             if($classesfound){
-                return $classesfound;
+                return ['email' => $classesfound->getId()];
             }else{
-                return 'clase no encontrada' + $founduser[0]['email'];
+                return ['class' => null];
             }
         }else{
             return 'usuario no encontrado';
